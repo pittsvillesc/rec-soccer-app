@@ -1,0 +1,111 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="rec-soccer-family-contacts">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+            }
+            .container_content {
+/*                width: 100%;*/
+/*                @apply(--layout-horizontal);*/
+            }
+            .container_title {  
+/*                width: 100%;*/
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+                background-color: rgba(255,255,255,.8);
+                height: 60px;
+/*                line-height: 40px;*/
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                border-bottom-left-radius: 6px;
+                border-bottom-right-radius: 6px;
+                border: 0 solid transparent;
+                padding: 2px;
+            }
+            .container_title div {
+/*                line-height: 40px;*/
+            }
+            .contact_list {
+                @apply(--layout-vertical);
+                padding: 10px;
+            }
+            iron-icon {
+                padding-left: 8px;
+                margin-right: 12px;
+                
+            }
+            paper-icon-item {
+                margin-bottom: 6px;
+                background-color: rgba(255,255,255,.8);
+            }
+/*
+            paper-item {
+                width: 100%;
+                @apply(--layout-horizontal);
+            }
+*/
+/*
+            paper-icon-item {
+                @apply(--layout-horizontal);
+            }
+*/
+/*
+            .start_just {
+                
+                @apply(--layout-start-justified);
+            }
+*/
+/*
+            .nav_container {
+                @apply(--layout-horizontal);
+                @apply(--layout-center-justified);
+            }
+*/
+        </style>
+        <div class="container_content">
+            <div class="container_title"><div><h3>Parent/Guardian Contacts</h3></div></div>
+            <iron-selector class="contact_list" selected="[[key]]" attr-for-selected="key">
+                <paper-icon-item>
+                    <iron-icon icon="star"></iron-icon>
+                    Item 1
+                </paper-icon-item>
+                <paper-icon-item><iron-icon icon="star" class="start_just"></iron-icon>Item 2</paper-icon-item>
+            </iron-selector>
+            <p>[[title]]</p>
+        </div>
+        
+    </template>
+
+    <script>
+        Polymer({
+            is: 'rec-soccer-family-contacts',
+            properties: {
+                title: {
+                    type: String,
+                    value: "<rec-soccer-family-contacts></rec-soccer-family-contacts>",
+                },
+                key: {
+                    type: String,
+                    value: ""
+                }
+            }
+        });
+    </script>
+</dom-module>

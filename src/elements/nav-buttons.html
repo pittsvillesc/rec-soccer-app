@@ -1,0 +1,128 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import"
+    href="../../bower_components/polymer/polymer.html">
+<!--
+<link rel="import" 
+      href="../../bower_components/iron-behaviors/">
+-->
+<link rel="import"
+    href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import"
+    href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import"
+    href="../../bower_components/paper-buttons-group/paper-buttons-group.html">
+<link rel="import"
+    href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import"
+    href="../../bower_components/paper-button/paper-button.html">
+<link rel="import"
+    href="../shared-styles.html">
+
+<dom-module id="nav-buttons">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+/*                height: 100%;*/
+            }
+            .button_list { 
+                @apply(--layout-horizontal);
+                max-width: 650px; 
+                margin-left: auto; 
+                margin-right: auto; 
+            }
+/*
+            .button_list paper-button {        
+            }
+*/
+            .button_list a paper-button {
+                
+                @apply(--layout-horizontal);  
+                display: inline-block;
+                padding: 0;
+                margin: 0;
+                color: var(--app-secondary-color);
+                height: 40px;
+                line-height: 40px;
+                width: 150px;
+                color: #333;
+                border-right: 1px solid transparent;
+                border-left: 1px solid transparent;
+                background-color: rgba(255,255,255,.6);
+            }
+             
+            .button_list a paper-button iron-icon {
+                @apply(--layout-horizontal);                
+                @apply(--layout-center-justified);
+            }
+            .button_list a:first-child {
+                border-top-left-radius: 3px;
+                border-bottom-left-radius: 3px;
+                border-left: 0 solid transparent;
+            }
+            .button_list a:last-child {
+                border-top-right-radius: 3px;
+                border-bottom-right-radius: 3px;
+            }
+              
+            #home_button {
+                @apply(--layout-horizontal);                
+                @apply(--layout-center-justified);
+                
+            }
+            .other_buttons {
+                @apply(--layout-horizontal);                
+                @apply(--layout-center-justified);
+            }
+            a.iron-selected .other_buttons {
+                background-color: #404040;
+                color: #fff;
+            }
+            a.iron-selected #home_button {
+                background-color: #404040;
+                color: #fff;
+            }
+            .button-list a.iron-selected {
+                color: black;
+                font-weight: bold;
+            }
+            
+            iron-selector {
+                @apply(--layout-horizontal);
+            }
+            
+        </style>
+
+<!--        <paper-buttons-group selected="[[page]]" attr-for-selected="name" role="navigation">-->
+        <iron-selector class="button_list" selected="[[page]]" attr-for-selected="name" role="navigation">
+            <a name="home" href="/home"><paper-button id="home_button"><iron-icon icon="home"></iron-icon></paper-button></a>
+            <a name="family-contacts" href="/family-contacts"><paper-button><div class="other_buttons">Family</div></paper-button></a>
+            <a name="player-profiles" href="/registered-players"><paper-button><div class="other_buttons">Players</div></paper-button></a>
+        </iron-selector>
+<!--        </paper-buttons-group>-->
+    </template>
+
+    <script>
+        Polymer({
+            is: 'nav-buttons',
+            properties: {
+                title: {
+                    type: String,
+                    value: "<nav-buttons></nav-buttons>",
+                },
+                
+            }
+        });
+
+    </script>
+</dom-module>
