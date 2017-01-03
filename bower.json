@@ -18,7 +18,13 @@
     "polymer": "Polymer/polymer#^1.6.0",
     "paper-buttons-group": "NeilujD/paper-buttons-group#^1.2.1",
     "iron-icons": "PolymerElements/iron-icons#^1.2.0",
-    "paper-item": "PolymerElements/paper-item#^1.2.1"
+    "paper-item": "PolymerElements/paper-item#^1.2.1",
+    "polymerfire": "firebase/polymerfire#^0.10.3",
+    "login-fire": "convoo/login-fire#^0.1.4",
+    "paper-card": "PolymerElements/paper-card#^1.1.4",
+    "paper-dialog-scrollable": "PolymerElements/paper-dialog-scrollable#^1.1.5",
+    "paper-dialog": "PolymerElements/paper-dialog#^1.1.0",
+    "paper-toggle-button": "PolymerElements/paper-toggle-button#^1.2.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

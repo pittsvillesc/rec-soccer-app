@@ -1,0 +1,71 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<!--<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">-->
+<link rel="import" href="../shared-styles.html">
+<link rel="import" href="rec-soccer-select-item.html">
+<link rel="import" href="rec-soccer-quick-add.html">
+<dom-module id="rec-soccer-selector">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+            }
+        </style>
+<!--                <div on-tap="showData">{{title}}</div>-->
+        <!--        <div>Path: [[path]]</div>-->
+        <iron-selector class="contact_list" selected="[[key]]" attr-for-selected="key">
+            <template is="dom-repeat" items="{{data}}">
+                <rec-soccer-select-item is-player="[[isPlayer]]" id="contact-[[index]]" key="[[contact.$key]]" last-name="[[item.lastName]]" first-name="[[item.firstName]]" data="{{item}}"></rec-soccer-select-item>
+            </template>
+            <rec-soccer-quick-add path="[[path]]"></rec-soccer-quick-add>
+            <content></content>
+        </iron-selector>
+    </template>
+    <script>
+        Polymer({
+            is: 'rec-soccer-selector'
+            , properties: {
+                title: {
+                    type: String
+                    , value: "<rec-soccer-selector></rec-soccer-selector>"
+                , }
+                , key: {
+                    type: String
+                    , value: ""
+                , }
+                , path: {
+                    type: String
+                    , notify: true
+                , }
+                , data: {
+                    type: Array
+                        //                    , value: []
+                        
+                , },
+                isPlayer: {
+                    type: Boolean
+                }
+            , }
+            , listeners: {
+                "contactClicked": "clickedContact"
+            }
+            , showData: function () {}
+            , clickedContact: function (e) {
+                console.info("clicked contact", e.detail.data);
+                this.fire("drawerToggle", {data: e.detail.data});
+            },
+            showData: function() {
+                console.info("Data", this.data);
+            }
+        });
+    </script>
+</dom-module>

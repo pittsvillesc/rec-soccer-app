@@ -1,0 +1,81 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../shared-styles.html">
+<dom-module id="rec-soccer-quick-add">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 2px;
+            }
+            
+            paper-item {
+                /*                margin-bottom: 6px;*/
+                background-color: rgba(255, 255, 255, .8);
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                border-bottom-left-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }
+            
+            paper-input {
+                margin-right: 6px;
+            }
+        </style>
+        <firebase-document id="quickAddDoc" app-name="registration-app" path="[[path]]" data="{{data}}"> </firebase-document>
+        <!--        <div>{{title}}</div>-->
+        <paper-item>
+            <paper-input id="firstName" label="First Name" value=""></paper-input>
+            <paper-input id="lastName" label="Last Name" value=""></paper-input>
+            <iron-icon icon="save" on-tap="saveName"></iron-icon>
+        </paper-item>
+    </template>
+    <script>
+        Polymer({
+            is: 'rec-soccer-quick-add'
+            , properties: {
+                title: {
+                    type: String
+                    , value: "<rec-soccer-quick-add></rec-soccer-quick-add>"
+                , }
+                , path: {
+                    type: String
+                }
+                , data: {
+                    type: Object
+                    , notifies: true
+                    , value: {
+                        firstName: ""
+                        , lastName: ""
+                    }
+                }
+            }
+            , saveName: function () {
+                this.data.lastName = this.$.lastName.value;
+                this.data.firstName = this.$.firstName.value;
+                this.$.quickAddDoc.data = this.data;
+                this.$.lastName.value = "";
+                this.$.firstName.value = "";
+                var prom = this.$.quickAddDoc.save(this.path);
+                prom.then(function (data) {
+                    console.log("Promise:",data);
+                }, function (data) {
+                    console.error("Promise:",data);
+                });
+                
+            }
+        });
+    </script>
+</dom-module>

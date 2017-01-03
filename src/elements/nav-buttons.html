@@ -102,12 +102,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             
         </style>
-
+        <div>Buttons: Signed In? [[signedIn]]</div>
 <!--        <paper-buttons-group selected="[[page]]" attr-for-selected="name" role="navigation">-->
         <iron-selector class="button_list" selected="[[page]]" attr-for-selected="name" role="navigation">
             <a name="home" href="/home"><paper-button id="home_button"><iron-icon icon="home"></iron-icon></paper-button></a>
             <a name="family-contacts" href="/family-contacts"><paper-button><div class="other_buttons">Family</div></paper-button></a>
-            <a name="player-profiles" href="/registered-players"><paper-button><div class="other_buttons">Players</div></paper-button></a>
+            <a name="player-profiles" href="/registered-players" hidden$="[[!signedIn]]"><paper-button><div class="other_buttons">Players</div></paper-button></a>
+<!--            <a name="sign-in" href="/sign-in" hidden$="[[signedIn]]"><paper-button><div class="other_buttons">Sign In</div></paper-button></a>-->
         </iron-selector>
 <!--        </paper-buttons-group>-->
     </template>
@@ -120,6 +121,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: String,
                     value: "<nav-buttons></nav-buttons>",
                 },
+                signedIn: {
+                    type: Boolean,
+                    value: false,
+//                    reflectToAttribute: true
+                }
                 
             }
         });

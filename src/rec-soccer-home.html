@@ -7,12 +7,10 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="rec-soccer-sign-in.html">
 <link rel="import" href="home/home-news.html">
-<link rel="import" href="home/home-login.html">
-
 <dom-module id="rec-soccer-home">
     <template>
         <style include="shared-styles">
@@ -21,22 +19,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 padding: 10px;
             }
         </style>
-
-        <div>{{title}}</div>        
-        <home-news></home-news>
-        <home-login></home-login>
+        <div on-tap="showData">{{title}}</div>
+        <div>Signed In: {{signedIn}}</div>
+        <home-news></home-news>        
     </template>
-
     <script>
         Polymer({
-            is: 'rec-soccer-home',
-            properties: {
+            is: 'rec-soccer-home'
+            , properties: {
                 title: {
-                    type: String,
-                    value: "<rec-soccer-home></rec-soccer-home>",
-                },
+                    type: String
+                    , value: "<rec-soccer-home></rec-soccer-home>"
+                , }
+//                , signedIn: {
+//                    type: Boolean,
+//                    reflectToAttribute: true,
+//                    notify: true
+//                }
+//                , user: {
+//                    type: Object
+//                    , value: {},
+//                    notify: true
+//                }
+            },
+            signOut: function() {
+                this.$.recSoccerSignIn.signOut();
+            },
+            showData: function() {
+                console.info("User: ", this.user);
             }
         });
-
     </script>
 </dom-module>

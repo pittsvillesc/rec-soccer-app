@@ -1,0 +1,104 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-behaviors/iron-control-state.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../shared-styles.html">
+<dom-module id="rec-soccer-select-item">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 2px;
+                /*
+                margin-bottom: 6px;
+                background-color: rgba(255,255,255,.8);
+*/
+            }
+            
+            paper-icon-item {
+                /*                margin-bottom: 6px;*/
+                background-color: rgba(255, 255, 255, .8);
+                border-top-left-radius: 6px;
+                border-top-right-radius: 6px;
+                border-bottom-left-radius: 6px;
+                border-bottom-right-radius: 6px;
+            }
+        </style>
+        <!--        <div>{{title}}</div>-->
+        <!--        <div>[[title]]</div>-->
+        <paper-icon-item name="[[key]]" on-tap="fireSelected">
+<!--
+            <div hidden$="[[!isPlayer]]">   
+                <paper-toggle-button checked>Register</paper-toggle-button>
+            </div>
+-->
+            <div hidden$="[[!isPlayer]]">
+                <iron-icon icon="[[_computeIcon(data)]]" on-tap="showData"></iron-icon>
+            </div>
+            <div>
+                [[firstName]] [[lastName]]
+            </div>
+            <div>
+                <iron-icon icon="launch"></iron-icon>
+            </div>
+            </paper-icon-item>
+    </template>
+    <script>
+        Polymer({
+            is: 'rec-soccer-select-item'
+            , properties: {
+                title: {
+                    type: String
+                    , value: "<rec-soccer-select-item></rec-soccer-select-item>"
+                , }
+                , key: {
+                    type: String
+                    , value: ""
+                , }
+                , firstName: {
+                    type: String
+                        //                    , value: ""
+                }
+                , lastName: {
+                    type: String
+                    , //                    value: ""
+                },
+                data: {
+                    type: Object,
+                    notify: true
+                },
+                isPlayer: {
+                    type: Boolean,
+                    value: false
+                }
+            , },
+            _computeIcon: function(data) {
+                if (data.isActive == "on") {
+                    return "star";
+                } else {
+                    return "star-border";
+                }
+                
+            }
+            , showData: function () {
+                console.info("First Name:", this.firstName);
+                console.info("Last Name:", this.lastName);
+            }
+            , fireSelected: function (e) {
+                this.fire("contactClicked", {data: this.data});
+            }
+        });
+    </script>
+</dom-module>

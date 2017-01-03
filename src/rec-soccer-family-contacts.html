@@ -7,31 +7,40 @@ The complete set of contributors may be found at http://polymer.github.io/CONTRI
 Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/paper-item/paper-item.html">
-<link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
+<!--
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+-->
+<link rel="import" href="elements/rec-soccer-selector.html">
+<link rel="import" href="elements/rec-soccer-form-drawer.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<!--<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">-->
+<!--<link rel="import" href="elements/rec-soccer-form-drawer.html">-->
+<!--<link rel="import" href="elements/rec-soccer-select-item.html">-->
 <link rel="import" href="shared-styles.html">
-
 <dom-module id="rec-soccer-family-contacts">
     <template>
         <style include="shared-styles">
             :host {
                 display: block;
                 padding: 10px;
+                --app-drawer-width: 512px;
             }
+            
             .container_content {
-/*                width: 100%;*/
-/*                @apply(--layout-horizontal);*/
+                /*                width: 100%;*/
+                /*                @apply(--layout-horizontal);*/
             }
-            .container_title {  
-/*                width: 100%;*/
+            
+            .container_title {
+                /*                width: 100%;*/
                 @apply(--layout-horizontal);
                 @apply(--layout-center-justified);
-                background-color: rgba(255,255,255,.8);
+                background-color: rgba(255, 255, 255, .8);
                 height: 60px;
-/*                line-height: 40px;*/
+                /*                line-height: 40px;*/
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
                 border-bottom-left-radius: 6px;
@@ -39,72 +48,103 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 border: 0 solid transparent;
                 padding: 2px;
             }
+            
             .container_title div {
-/*                line-height: 40px;*/
+                /*                line-height: 40px;*/
             }
+            /*
             .contact_list {
                 @apply(--layout-vertical);
                 padding: 10px;
             }
+*/
+            /*
             iron-icon {
                 padding-left: 8px;
                 margin-right: 12px;
-                
             }
+*/
+            /*
             paper-icon-item {
                 margin-bottom: 6px;
-                background-color: rgba(255,255,255,.8);
+                background-color: rgba(255, 255, 255, .8);
             }
-/*
-            paper-item {
+*/
+            
+            app-drawer {
+                height: 100%;
+                /*                width: 680px;*/
+            }
+            
+            paper-card {
+                height: 100%;
                 width: 100%;
-                @apply(--layout-horizontal);
             }
-*/
-/*
-            paper-icon-item {
-                @apply(--layout-horizontal);
-            }
-*/
-/*
-            .start_just {
-                
-                @apply(--layout-start-justified);
-            }
-*/
-/*
-            .nav_container {
-                @apply(--layout-horizontal);
-                @apply(--layout-center-justified);
-            }
-*/
         </style>
+        <firebase-query id="contactQuery" app-name="registration-app" path="/family-profile/[[user.uid]]/family-contacts" data="{{data}}"></firebase-query>
         <div class="container_content">
-            <div class="container_title"><div><h3>Parent/Guardian Contacts</h3></div></div>
-            <iron-selector class="contact_list" selected="[[key]]" attr-for-selected="key">
-                <paper-icon-item>
-                    <iron-icon icon="star"></iron-icon>
-                    Item 1
-                </paper-icon-item>
-                <paper-icon-item><iron-icon icon="star" class="start_just"></iron-icon>Item 2</paper-icon-item>
-            </iron-selector>
-            <p>[[title]]</p>
+            <div class="container_title" on-tap="showData">
+                <div>
+                    <h3>Parent/Guardian Contacts</h3></div>
+            </div>
+            <rec-soccer-selector data="{{data}}" path="/family-profile/[[user.uid]]/family-contacts/"> </rec-soccer-selector>
         </div>
-        
-    </template>
+        <paper-dialog id="contactForm" with-backdrop>
 
+                <rec-soccer-form-drawer id="contactFormData" path="/family-profile/[[user.uid]]/family-contacts/"></rec-soccer-form-drawer>
+        </paper-dialog>
+    </template>
     <script>
         Polymer({
-            is: 'rec-soccer-family-contacts',
-            properties: {
+            is: 'rec-soccer-family-contacts'
+            , properties: {
                 title: {
-                    type: String,
-                    value: "<rec-soccer-family-contacts></rec-soccer-family-contacts>",
-                },
-                key: {
-                    type: String,
-                    value: ""
+                    type: String
+                    , value: "<rec-soccer-family-contacts></rec-soccer-family-contacts>"
+                , }
+                , key: {
+                    type: String
+                    , value: ""
                 }
+                , path: {
+                    type: String
+                    , notify: true
+                        //                    value: "",
+                }
+                , user: {
+                    type: Object
+                }
+                , data: {
+                    type: Array, //                    value: []
+                }
+            }
+            , _computeOpen: function (open) {
+                console.log("in _computeOpen");
+                this.drawerOpen = !this.drawerOpen;
+                //                if (this.drawerOpen) {
+                //                    
+                //                }
+            }
+            , listeners: {
+                "drawerToggle": "showModal",
+                "infoSaved": "closeModal"
+            }
+            , showData: function () {
+                console.info("Click Data:", this);
+            }
+            , showModal: function (e) {
+                console.info("Toggle Drawer", e.detail);
+                this.$.contactFormData.data = e.detail.data;
+                this.$.contactFormData.key = e.detail.data.$key;
+                this.$.contactForm.open();
+//                this.fire("openDrawer", {
+//                    data: e.detail.data
+//                });
+                //                this.drawerOpen = !this.drawerOpen;
+                //                if (!this.$.formDrawer.opened) this.$.formDrawer.toggle();
+            },
+            closeModal: function() {
+                this.$.contactForm.close();
             }
         });
     </script>

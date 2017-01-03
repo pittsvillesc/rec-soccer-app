@@ -1,0 +1,90 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<!--<link rel="import" href="../bower_components/polymerfire/firebase-app.html">-->
+<!--<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">-->
+<link rel="import" href="../bower_components/login-fire/login-fire.html">
+<link rel="import" href="home/home-news.html">
+<link rel="import" href="shared-styles.html">
+<dom-module id="rec-soccer-sign-in">
+    <template>
+        <style include="shared-styles">
+/*
+            :host {
+                display: block;
+                padding: 10px;
+            }
+*/
+            
+            :host {
+                position: absolute;
+                top: 64px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: var(--sign-in-background-color, rgb(58, 71, 76));
+                padding: 10px;
+/*                background-color: rgba(255,255,255,.8);*/
+                transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1;
+                color: var(--sign-in-text-color, #404040);
+                @apply(--layout);
+                @apply(--layout-center-center);
+            }
+            login-fire {
+                background-color: rgba(255,255,255,.8);
+                color: var(--sign-in-text-color, #404040);
+                margin: 16px;
+                padding: 16px;
+            }
+            
+            :host([signed-in]) {
+                opacity: 0;
+                pointer-events: none;
+            }
+            
+            paper-button > * {
+                vertical-align: middle;
+                text-transform: none;
+            }
+        </style>
+<!--        <div>{{title}}</div>-->
+<!--         <firebase-app id="regApp" auth-domain="registration-app-a043a.firebaseapp.com" database-url="https://registration-app-a043a.firebaseio.com/" api-key="AIzaSyCb-qKlzvWaz6gwyURFilfpCr1HUbnZCN8" name="registration-app"> </firebase-app>-->
+        <login-fire id="auth" reverse horizontal email-password auto-sign-up google app-name="registration-app" user="{{user}}" signed-in="{{signedIn}}"></login-fire>
+<!--        <home-news hidden$="[[!signedIn]]"></home-news>-->
+    </template>
+    <script>
+        Polymer({
+            is: 'rec-soccer-sign-in'
+            , properties: {
+                title: {
+                    type: String
+                    , value: "<rec-soccer-sign-in></rec-soccer-sign-in>"
+                , }
+                , user: {
+                    type: String
+                    , reflectToAttribute: true
+                    , notify: true
+                }
+                , signedIn: {
+                    type: Boolean
+                    , value: false
+                    , reflectToAttribute: true
+                    , notify: true
+                }
+            }
+            , signOut: function () {
+                if (this.$.auth) {
+                    this.$.auth.signOut();
+                }
+            }
+        });
+    </script>
+</dom-module>
