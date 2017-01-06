@@ -9,9 +9,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../shared-styles.html">
-<!--<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html" <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">-->
+<!--
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
+-->
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <dom-module id="rec-soccer-form-drawer">
     <template>
@@ -20,11 +25,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 display: block;
                 padding: 10px;
             }
-            
-            paper-dialog-scrollable {
-                @apply(--layout-flex);
+            section {
+                width: 100%;
+                height: 450px;
+                @apply(--layout-vertical);
             }
-            
+            section paper-dialog-scrollable {
+                @apply(--layout-flex);
+/*                @apply(--layout-flex);*/
+            }
+            .header {
+                padding: 8px 24px;
+            }
             paper-toggle-button {
                 --paper-toggle-button-checked-bar-color: #404040;
                 --paper-toggle-button-checked-button-color: #404040;
@@ -36,35 +48,85 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             .buttons {
                 margin-top: 12px;
-                
+                padding: 8px 24px;
+                text-align: right;
             }
         </style>
         <firebase-document id="editDoc" app-name="registration-app" path="[[path]][[data.$key]]" data="{{data}}"> </firebase-document>
-        <h2>[[type]] Information for: [[data.firstName]] [[data.lastName]]</h2>
-        <div>
-            <div>
-                <paper-toggle-button id="read_only" checked$="{{!readonly}}" on-change="toggleReadonly">Edit Mode: <span hidden$="[[readonly]]">ON (Changes saved immediately)</span><span hidden$="[[!readonly]]">OFF</span></paper-toggle-button>
-                <paper-input readonly$="[[readonly]]" id="firstName" value="{{data.firstName}}" label="First Name"></paper-input>
-                <paper-input readonly$="[[readonly]]" id="lastName" value="{{data.lastName}}" label="Last Name"></paper-input>
-                <paper-input hidden$="[[!_showContact()]]" readonly$="[[readonly]]" id="streetAddress" value="{{data.streetAddress}}" label="Street Address"></paper-input>
-                <paper-input hidden$="[[!_showContact()]]" readonly$="[[readonly]]" id="city" value="{{data.city}}" label="City"></paper-input>
-                <paper-input hidden$="[[!_showContact()]]" readonly$="[[readonly]]" id="zip" value="{{data.zip}}" label="Zip Code"></paper-input>
-                <paper-input hidden$="[[!_showContact()]]" readonly$="[[readonly]]" id="primaryPhone" value="{{data.primaryPhone}}" label="Primary Phone"></paper-input>
-                <paper-input hidden$="[[!_showContact()]]" readonly$="[[readonly]]" id="secondaryPhone" value="{{data.secondaryPhone}}" label="Secondary Phone"></paper-input>
-                <paper-input hidden$="[[!_showContact()]]" readonly$="[[readonly]]" id="email" value="{{data.email}}" label="Email Address"></paper-input>
-                <paper-input hidden$="[[_showContact()]]" readonly$="[[readonly]]" class="formField" id="birthdate" type="date" value="{{data.birthdate}}" label="Date of Birth"></paper-input>
-                <paper-input hidden$="[[_showContact()]]" readonly$="[[readonly]]" class="formField" id="school" value="{{data.school}}" label="School"></paper-input>
-                <paper-toggle-button id="isActive" disabled$="[[readonly]]" checked$="{{data.isActive}}" value="{{data.isActive}}">Include in Current Registration</paper-toggle-button>
+        <paper-dialog with-backdrop id="contactFormModal">
+
+            <div class="header">
+                <h4>[[type]] Information for: [[data.firstName]] [[data.lastName]]</h4>
             </div>
-        </div>
-        <div class="buttons" hidden$="[[readonly]]">
-            <paper-button on-tap="saveContact">
-                <iron-icon icon="save"></iron-icon>Save [[type]] Information</paper-button>
-            <paper-button on-tap="deleteContact"><iron-icon icon="delete"></iron-icon>Delete [[type]]</paper-button>
-        </div>
-        <div class="buttons" hidden$="[[!readonly]]">
-            <paper-button on-tap="closeForm">Close</paper-button>
-        </div>
+            <paper-dialog-scrollable>
+                <div>
+                    <paper-toggle-button id="read_only"
+                        checked$="{{!readonly}}"
+                        on-change="toggleReadonly">Edit Mode: <span hidden$="[[readonly]]">ON (Changes saved immediately)</span><span hidden$="[[!readonly]]">OFF</span></paper-toggle-button>
+                    <paper-input readonly$="[[readonly]]"
+                        id="firstName"
+                        value="{{data.firstName}}"
+                        label="First Name"></paper-input>
+                    <paper-input readonly$="[[readonly]]"
+                        id="lastName"
+                        value="{{data.lastName}}"
+                        label="Last Name"></paper-input>
+                    <paper-input hidden$="[[!_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        id="streetAddress"
+                        value="{{data.streetAddress}}"
+                        label="Street Address"></paper-input>
+                    <paper-input hidden$="[[!_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        id="city"
+                        value="{{data.city}}"
+                        label="City"></paper-input>
+                    <paper-input hidden$="[[!_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        id="zip"
+                        value="{{data.zip}}"
+                        label="Zip Code"></paper-input>
+                    <paper-input hidden$="[[!_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        id="primaryPhone"
+                        value="{{data.primaryPhone}}"
+                        label="Primary Phone"></paper-input>
+                    <paper-input hidden$="[[!_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        id="secondaryPhone"
+                        value="{{data.secondaryPhone}}"
+                        label="Secondary Phone"></paper-input>
+                    <paper-input hidden$="[[!_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        id="email"
+                        value="{{data.email}}"
+                        label="Email Address"></paper-input>
+                    <paper-input hidden$="[[_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        class="formField"
+                        id="birthdate"
+                        type="date"
+                        value="{{data.birthdate}}"
+                        label="Date of Birth"></paper-input>
+                    <paper-input hidden$="[[_showContact(type)]]"
+                        readonly$="[[readonly]]"
+                        class="formField"
+                        id="school"
+                        value="{{data.school}}"
+                        label="School"></paper-input>
+                </div>
+            </paper-dialog-scrollable>
+            <div id="editButtons" class="buttons"
+                hidden$="[[readonly]]">
+                <paper-icon-button on-tap="saveContact"><iron-icon icon="save"></iron-icon></paper-icon-button>
+                <paper-icon-button on-tap="deleteContact"><iron-icon icon="delete"></iron-icon></paper-icon-button>                                
+            </div>
+            <div id="readOnlyButton" class="buttons" hidden$="[[!readonly]]">
+                <paper-button on-tap="close">Close</paper-button>
+            </div>
+            
+        </paper-dialog>
+        
     </template>
     <script>
         Polymer({
@@ -82,7 +144,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: Boolean
                     , value: true
                     , reflectToAttribute: true
-                    , notify: true
+//                    , notify: true
                 }
                 , type: {
                     type: String
@@ -97,6 +159,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             , }
             , toggleReadonly: function () {
                 this.readonly = !this.readonly;
+//                this.$.editButtons.hidden = !this.$.editButtons.hidden;
+//                this.$.readOnlyButton.hidden = !this.$.readOnlyButton.hidden;
             }
             , saveContact: function () {
                 //                this.fire("saveContact", {saveData: this.data});
@@ -109,8 +173,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             , closeForm: function () {
                 this.fire("infoSaved");
             }
-            , _showContact: function () {
-                if (this.type === "Contact") {
+            , _showContact: function (pType) {
+                if (pType === "Contact") {
                     return true;
                 }
                 else return false;
@@ -121,6 +185,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     return true;
                 }
                 else return false;
+            },
+            open: function() {
+                this.$.contactFormModal.open();
+            },
+            close: function() {
+                this.$.contactFormModal.close();
             }
         });
     </script>

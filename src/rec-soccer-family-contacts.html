@@ -16,7 +16,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="elements/rec-soccer-selector.html">
 <link rel="import" href="elements/rec-soccer-form-drawer.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<!--<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">-->
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <!--<link rel="import" href="elements/rec-soccer-form-drawer.html">-->
 <!--<link rel="import" href="elements/rec-soccer-select-item.html">-->
 <link rel="import" href="shared-styles.html">
@@ -41,10 +42,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 background-color: rgba(255, 255, 255, .8);
                 height: 60px;
                 /*                line-height: 40px;*/
+/*
                 border-top-left-radius: 6px;
                 border-top-right-radius: 6px;
                 border-bottom-left-radius: 6px;
                 border-bottom-right-radius: 6px;
+*/
                 border: 0 solid transparent;
                 padding: 2px;
             }
@@ -80,19 +83,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 height: 100%;
                 width: 100%;
             }
+            .button-container {
+                @apply(--layout-horizontal);                
+                @apply(--layout-center-justified);
+            }
+            .button-container paper-button {
+/*                @apply(--layout-horizontal);*/
+/*                width: 400px;*/
+                margin: 10px;
+                padding: 10px;
+                background-color: rgba(255,255,255,.6);
+            }
         </style>
         <firebase-query id="contactQuery" app-name="registration-app" path="/family-profile/[[user.uid]]/family-contacts" data="{{data}}"></firebase-query>
         <div class="container_content">
+            <div class="button-container">
+                <div><paper-button class="button-container"><div>Current Reg.</div></paper-button></div>
+            </div>
             <div class="container_title" on-tap="showData">
                 <div>
                     <h3>Parent/Guardian Contacts</h3></div>
             </div>
             <rec-soccer-selector data="{{data}}" path="/family-profile/[[user.uid]]/family-contacts/"> </rec-soccer-selector>
         </div>
-        <paper-dialog id="contactForm" with-backdrop>
-
-                <rec-soccer-form-drawer id="contactFormData" path="/family-profile/[[user.uid]]/family-contacts/"></rec-soccer-form-drawer>
-        </paper-dialog>
+        <rec-soccer-form-drawer id="contactForm"
+            path="/family-profile/[[user.uid]]/family-contacts/"></rec-soccer-form-drawer>
+        
     </template>
     <script>
         Polymer({
@@ -134,8 +150,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
             , showModal: function (e) {
                 console.info("Toggle Drawer", e.detail);
-                this.$.contactFormData.data = e.detail.data;
-                this.$.contactFormData.key = e.detail.data.$key;
+                this.$.contactForm.data = e.detail.data;
+                this.$.contactForm.key = e.detail.data.$key;
                 this.$.contactForm.open();
 //                this.fire("openDrawer", {
 //                    data: e.detail.data
